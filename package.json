@@ -1,18 +1,15 @@
 {
-  "name": "framework-n-able-arduino",
-  "version": "0.3.0",
-  "description": "Arduino Wiring-based Framework for Arm BLE devices supported by the NimBLE stack",
-  "keywords": [
-    "framework",
-    "Arduino",
-    "BLE",
-    "nRF51",
-    "nRF52",
-    "ARM"
-  ],
-  "license": "LGPL-2.1-or-later",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/h2zero/n-able-Arduino.git"
-  }
+	"name": "framework-n-able-arduino-riscv",
+	"version": "0.3.2",
+	"description": "Arduino Wiring-based Framework for Arm BLE devices supported by the NimBLE stack",
+	"keywords": [
+		"framework",
+		"Arduino",
+		"RISC-V"
+	],
+	"license": "LGPL-2.1-or-later",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/h2zero/n-able-Arduino.git"
+	}
 }

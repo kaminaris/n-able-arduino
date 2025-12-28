@@ -21,93 +21,70 @@
 #ifndef TwoWire_h
 #define TwoWire_h
 
-#include "nrf.h"
-
 #include "Stream.h"
-#include "variant.h"
+// #include "variant.h"
 
 #include "RingBuffer.h"
 
 // WIRE_HAS_END means Wire has end()
 #define WIRE_HAS_END 1
+#define I2C_DEFAULT_TIMEOUT 100000
+#define SYSTEM_CLOCK_MHZ (FUNCONF_SYSTEM_CORE_CLOCK/1000000)
 
-class TwoWire : public Stream
-{
-  public:
-#if defined(NRF52_SERIES)
-    TwoWire(NRF_TWIM_Type * p_twim, NRF_TWIS_Type * p_twis, IRQn_Type IRQn, uint8_t pinSDA, uint8_t pinSCL);
-#else
-    TwoWire(NRF_TWI_Type * p_twi, uint8_t pinSDA, uint8_t pinSCL);
-#endif
-    void setPins(uint8_t pinSDA, uint8_t pinSCL);
-    void begin();
-#if defined(NRF52_SERIES)
-    void begin(uint8_t);
-#endif
-    void end();
-    void setClock(uint32_t);
+#define BUF_MAKE_U16(buff) ((buff[0] << 8) | buff[1])
 
-    void beginTransmission(uint8_t);
-    uint8_t endTransmission(bool stopBit);
-    uint8_t endTransmission(void);
+class TwoWire: public Stream {
+public:
+	TwoWire();
+	void begin(uint16_t i2c_speed_khz);
+	void end();
+	void setClock(uint32_t);
 
-    uint8_t requestFrom(uint8_t address, size_t quantity, bool stopBit);
-    uint8_t requestFrom(uint8_t address, size_t quantity);
+	void beginTransmission(uint8_t);
+	uint8_t endTransmission(bool stopBit);
+	uint8_t endTransmission(void);
 
-    size_t write(uint8_t data);
-    size_t write(const uint8_t * data, size_t quantity);
+	uint8_t requestFrom(uint8_t address, size_t quantity, bool stopBit);
+	uint8_t requestFrom(uint8_t address, size_t quantity);
 
-    virtual int available(void);
-    virtual int read(void);
-    virtual int peek(void);
-    virtual void flush(void);
-#if defined(NRF52_SERIES)
-    void onReceive(void(*)(int));
-    void onRequest(void(*)(void));
-    void onService(void);
-#endif
+	size_t write(uint8_t data);
+	size_t write(const uint8_t* data, size_t quantity);
 
-    using Print::write;
+	virtual int available(void);
+	virtual int read(void);
+	virtual int peek(void);
+	virtual void flush(void);
+	void onReceive(void (* )(int));
+	void onRequest(void (* )(void));
+	void onService(void);
 
-  private:
-#if defined(NRF52_SERIES)
-    NRF_TWIM_Type * _p_twim;
-    NRF_TWIS_Type * _p_twis;
-#else
-    NRF_TWI_Type * _p_twi;
-#endif
+	using Print::write;
 
-    IRQn_Type _IRQn;
+private:
 
-    uint8_t _uc_pinSDA;
-    uint8_t _uc_pinSCL;
+	uint8_t _uc_pinSDA;
+	uint8_t _uc_pinSCL;
 
-    bool master;
-    bool receiving;
-    bool transmissionBegun;
-    bool suspended;
+	bool master;
+	bool receiving;
+	bool transmissionBegun;
+	bool suspended;
 
-    // RX Buffer
-    RingBuffer rxBuffer;
+	// RX Buffer
+	RingBuffer rxBuffer;
 
-    // TX buffer
-    RingBuffer txBuffer;
-    uint8_t txAddress;
+	// TX buffer
+	RingBuffer txBuffer;
+	uint8_t txAddress;
 
-    // Callback user functions
-    void (*onRequestCallback)(void);
-    void (*onReceiveCallback)(int);
+	// Callback user functions
+	void (* onRequestCallback)(void);
+	void (* onReceiveCallback)(int);
 
-    // TWI clock frequency
-    static const uint32_t TWI_CLOCK = 100000;
+	// TWI clock frequency
+	static const uint32_t TWI_CLOCK = 100000;
 };
 
-#if WIRE_INTERFACES_COUNT > 0
 extern TwoWire Wire;
-#endif
-
-#if WIRE_INTERFACES_COUNT > 1
-extern TwoWire Wire1;
-#endif
 
 #endif
