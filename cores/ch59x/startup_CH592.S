@@ -3,7 +3,7 @@
  * Author             : WCH
  * Version            : V1.0.1
  * Date               : 2023/10/25
- * Description        : CH592 FreeRTOSÆô¶¯ÎÄ¼þ
+ * Description        : CH592 FreeRTOSï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
  *********************************************************************************
  * Copyright (c) 2023 Nanjing Qinheng Microelectronics Co., Ltd.
  * Attention: This software (modified or not) and binary are used for
@@ -50,7 +50,7 @@ _user_vector_base:
 	.option norvc;
 
     .word   unified_interrupt_entry              	/* BLEB */
-    .word   LLE_IRQHandler             				/* BLEL */
+    .word   unified_interrupt_entry             				/* BLEL */
     .word   unified_interrupt_entry             	/* USB */
     .word   0
     .word   unified_interrupt_entry          		/* TMR1 */
@@ -198,19 +198,19 @@ handle_reset:
 	addi a0, a0, 4
 	bltu a0, a1, 1b
 2:
-	/* Á÷Ë®Ïß¿ØÖÆÎ» & ¶¯Ì¬Ô¤²â¿ØÖÆÎ» */
+	/* ï¿½ï¿½Ë®ï¿½ß¿ï¿½ï¿½ï¿½Î» & ï¿½ï¿½Ì¬Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½Î» */
 	li t0, 0x1f
 	csrw 0xbc0, t0
 
-	/* ´ò¿ªÓ²¼þÑ¹Õ»£¬¹Ø±ÕÖÐ¶ÏÇ¶Ì×£¬ÔÚÖÐ¶Ïº¯ÊýÈë¿Ú´¦ÔÙ´ò¿ªÖÐ¶ÏÇ¶Ì× */
+	/* ï¿½ï¿½Ó²ï¿½ï¿½Ñ¹Õ»ï¿½ï¿½ï¿½Ø±ï¿½ï¿½Ð¶ï¿½Ç¶ï¿½×£ï¿½ï¿½ï¿½ï¿½Ð¶Ïºï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½ï¿½Ù´ï¿½ï¿½Ð¶ï¿½Ç¶ï¿½ï¿½ */
 	li t0, 0x01
 	csrw 0x804, t0
 
-	/* Ê¹ÓÃ»úÆ÷Ä£Ê½£¬ÔÚfreertosÖÐ´ò¿ªÖÐ¶Ï */
+	/* Ê¹ï¿½Ã»ï¿½ï¿½ï¿½Ä£Ê½ï¿½ï¿½ï¿½ï¿½freertosï¿½Ð´ï¿½ï¿½Ð¶ï¿½ */
     li t0, 0x1800
     csrw mstatus, t0
 
-	/* ÅäÖÃÏµÍ³Òì³£¼°ÖÐ¶ÏÏòÁ¿±í£¬ÓÃ»§ÕæÕýÊ¹ÓÃµÄÏòÁ¿±íÔÚÍ³Ò»Èë¿Ú unified_interrupt_entry ÖÐ´¦Àí */
+	/* ï¿½ï¿½ï¿½ï¿½ÏµÍ³ï¿½ì³£ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í³Ò»ï¿½ï¿½ï¿½ unified_interrupt_entry ï¿½Ð´ï¿½ï¿½ï¿½ */
 	la t0, _vector_base
     ori t0, t0, 3
 	csrw mtvec, t0

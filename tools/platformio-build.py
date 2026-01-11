@@ -117,6 +117,7 @@ env.Append(
 		("ARDUINO", 10808),
 		("CMSIS_STARTUP_FILE", "cores/ch59x/" + get_startup_filename(board)),
 		"__PIO_CPP_SUPPORT__",
+		("ENABLE_INTERRUPT_NEST", 1),
 	],
 
 	LIBS=[ "gcc" ],
