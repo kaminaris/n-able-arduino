@@ -111,6 +111,7 @@ env.Append(
 	],
 
 	CPPDEFINES= [
+		"__PIO_BUILD_FREERTOS__",
 		"TINYVECTOR",
         "CPLUSPLUS",
 		"ARDUINO_ARCH_WCH",
